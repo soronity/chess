@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "chess",
+    "slug": "chess",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  },
+  "name": "chess"
+}
