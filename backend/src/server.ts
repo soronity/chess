@@ -1,24 +1,24 @@
 import express from 'express';
-import { ChessManager } from './src/shared/chessManager'; 
+import { Request, Response, NextFunction } from 'express';
+import { ChessManager } from './shared/chessManager'; 
 import cors from 'cors';
-
 
 const app = express();
 const PORT = 3001; // You can choose any port you like
 // Use CORS middleware before defining routes
-app.use(cors());
+app.use(cors({
+    origin: '*'
+}));
 
-app.listen(PORT, () => {
-    console.log(`Server is running at http://localhost:${PORT}`);
-});
-
-let chessGame = new ChessManager();
 
 // Middleware to parse JSON requests
 app.use(express.json());
 
+let chessGame = new ChessManager();
+
 // Endpoint to make a move
 app.post('/move', (req, res) => {
+    console.log(req.body);
     const { from, to } = req.body;
     const isMoveValid = chessGame.move(from, to);
     if (isMoveValid) {
@@ -57,8 +57,15 @@ app.post('/reset', (req, res) => {
     res.json({ status: 'success', message: 'Game reset successfully!' });
 });
 
-app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).send('Something broke!');
+// Error handling middleware
+app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+    console.error(err.stack);  // Log the error stack trace for debugging
+    res.status(500).json({
+        status: 'error',
+        message: 'Something went wrong on the server! 🚨 Please try again later.',
+    });
 });
 
+app.listen(PORT, () => {
+    console.log(`Server is running at http://localhost:${PORT}`);
+});

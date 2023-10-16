@@ -7,16 +7,30 @@ export class ChessManager {
       this.game = new Chess();
     }
   
-    // Validate and make a move
     public move(from: string, to: string): boolean {
-        const move = this.game.move({
-            from,
-            to,
-            promotion: 'q'
-        });
+        const moveObj: any = {
+            from: from,
+            to: to
+        };
+    
+        // Let's check and log the piece we're trying to move
+        const piece = this.game.get(from);
+        console.log(`Attempting to move piece from ${from} to ${to}:`, piece);
+    
+        if (piece && piece.type === 'p') {
+            if (piece.color === 'w' && to[1] === '8') {
+                moveObj.promotion = 'q';
+            } else if (piece.color === 'b' && to[1] === '1') {
+                moveObj.promotion = 'q';
+            }
+        }
+        
+        console.log("Move object:", moveObj);  // This log will help us see the move object before the move attempt.
+    
+        const move = this.game.move(moveObj);
         return move !== null;
     }
-
+    
     // Get current board state
     public getBoard(): any {
         return this.game.board();
@@ -24,22 +38,22 @@ export class ChessManager {
 
     // Check if the current position is a check
     public isInCheck(): boolean {
-        return this.game.in_check();
+        return this.game.inCheck();
     }
 
     // Check if the current position is a checkmate
     public isInCheckmate(): boolean {
-        return this.game.in_checkmate();
+        return this.game.isCheckmate();
     }
 
     // Check if the current position is a stalemate
     public isInStalemate(): boolean {
-        return this.game.in_stalemate();
+        return this.game.isStalemate();
     }
 
     // Check if the game has ended in a draw
     public isDraw(): boolean {
-        return this.game.in_draw();
+        return this.game.isDraw();
     }
 
     // Get all legal moves for a piece on a square
