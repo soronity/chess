@@ -1,18 +1,18 @@
 import React from 'react';
 import { Col } from 'react-bootstrap';
 
-function Square(props) {
+function Square({ isDark, children, selected, onClick }) { // Add 'onClick' as a prop
   const style = {
-    backgroundColor: props.isDark ? '#d18b47' : '#ffce9e',
+    backgroundColor: selected ? 'red' : (isDark ? '#d18b47' : '#ffce9e'),
     height: '60px',
     width: '60px'
   };
+
   return (
-    <Col style={style}>
-      {props.piece}
+    <Col style={style} onClick={onClick}>  {/* Add onClick here */}
+      {children}
     </Col>
   );
 }
-
 
 export default Square;
