@@ -1,52 +1,39 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Row, Col, Button } from 'react-bootstrap';
-import Board from './components/board'; // <-- Don't forget this
+import { Container, Row, Col } from 'react-bootstrap';
+import Board from './components/board';
 import apiClient from './apiClient';
 
 function App() {
-  
-  // Initialize boardState as an 8x8 array filled with null values as an example
-  const [boardState, setBoardState] = useState(
-    [
-      ['r', 'n', 'b', 'q', 'k', 'b', 'n', 'r'],  // Black back rank
-      ['p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'],  // Black pawns
-      [null, null, null, null, null, null, null, null], // empty squares
-      [null, null, null, null, null, null, null, null], // ...
-      [null, null, null, null, null, null, null, null], // ...
-      [null, null, null, null, null, null, null, null], // ...
-      ['P', 'P', 'P', 'P', 'P', 'P', 'P', 'P'],  // White pawns
-      ['R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R']   // White back rank
-    ]
-  );
+  const [boardState, setBoardState] = useState(null);
 
   useEffect(() => {
     apiClient.get('/board')
       .then(response => {
+        console.log("Board state received from server:", JSON.stringify(response.data, null, 2));
         setBoardState(response.data);
       })
       .catch(error => {
         console.error("Error fetching initial board state:", error);
       });
   }, []);
+  
 
   const movePiece = async (selectedSquare, destinationSquare) => {
-    console.log("Entering movePiece with:", selectedSquare, destinationSquare); // Debug line
+    console.log(`Entering movePiece from ${selectedSquare} to ${destinationSquare}`);
   
-    // Construct the payload
     const payload = {
-      from: { x: selectedSquare.x, y: selectedSquare.y },
-      to: { x: destinationSquare.x, y: destinationSquare.y },
+      from: selectedSquare,
+      to: destinationSquare
     };
     
-    console.log("Payload to send:", payload); // Debug line
+    console.log("Payload to send:", payload);
   
     try {
-      console.log("About to send POST request to /move"); // Debug line
+      console.log("About to send POST request to /move");
       const response = await apiClient.post('/move', payload);
-      console.log("Received response:", response); // Debug line
+      console.log("Received response:", response);
   
       if (response.data.status === 'success') {
-        // Update the board with the new state
         const newBoardState = response.data.board;
         setBoardState(newBoardState);
       } else {
@@ -57,7 +44,6 @@ function App() {
     }
   };
   
-
   return (
     <Container>
       <Row className="mt-5">
@@ -67,7 +53,7 @@ function App() {
       </Row>
       <Row className="mt-3">
         <Col xs={12} md={8}>
-        {boardState ? <Board boardState={boardState} movePiece={movePiece} /> : "Loading..."}
+          {boardState ? <Board boardState={boardState} movePiece={movePiece} /> : "Loading..."}
         </Col>
       </Row>
     </Container>

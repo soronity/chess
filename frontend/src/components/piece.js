@@ -1,16 +1,28 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function Piece({ type, onClick }) {
+const typeToUnicode = {
+  'r': '♖',
+  'n': '♘',
+  'b': '♗',
+  'q': '♕',
+  'k': '♔',
+  'p': '♙',
+};
+
+function Piece({ type, color, onClick }) {
+  const symbol = color === 'b' ? typeToUnicode[type].toLowerCase() : typeToUnicode[type];
+
   return (
     <div onClick={() => onClick(type)}>
-      {type}
+      {symbol}
     </div>
   );
 }
 
 Piece.propTypes = {
   type: PropTypes.string,
+  color: PropTypes.string,
   onClick: PropTypes.func.isRequired,
 };
 

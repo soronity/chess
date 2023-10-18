@@ -6,33 +6,56 @@ import Piece from './piece';
 function Board({ boardState, movePiece }) {
   const [selectedSquare, setSelectedSquare] = useState(null);
 
-  const handlePieceClick = (pieceType, x, y) => {
-    console.log(`Piece clicked: ${pieceType} at ${x}, ${y}`);
-    setSelectedSquare({ x, y, type: pieceType });
+  const handlePieceClick = (pieceType, color, square) => {
+    console.log(`Piece clicked: ${pieceType} of color ${color} at ${square}`);
+    setSelectedSquare(square);
   };
 
-  const handleSquareClick = (x, y) => {
-    console.log(`Square clicked at ${x}, ${y}`);
+  const handleSquareClick = (square) => {
+    console.log(`Square clicked at ${square}`);
+    if (!square) {
+      console.warn("Square is null, likely an invalid click or markup issue");
+      return;
+    }
     if (selectedSquare) {
-      movePiece(selectedSquare, { x, y }); // Move piece directly
+      movePiece(selectedSquare, square);
     }
   };
 
   return (
     <div>
-      {boardState.map((row, rowIndex) => (
-        <Row key={rowIndex}>
-          {row.map((piece, colIndex) => (
-            <Square 
-              key={colIndex} 
-              isDark={(rowIndex + colIndex) % 2 === 1}
-              onClick={() => handleSquareClick(rowIndex, colIndex)}
-              selected={selectedSquare && selectedSquare.x === rowIndex && selectedSquare.y === colIndex}>
-              {piece ? <Piece type={piece} onClick={() => handlePieceClick(piece, rowIndex, colIndex)} /> : null}
-            </Square>
-          ))}
-        </Row>
-      ))}
+      {boardState.map((row, rowIndex) => {
+        // Debug log right here to check what's rendering.
+        console.log(`Rendering row ${rowIndex}:`, row);
+        
+        return (
+          <Row key={rowIndex}>
+            {row.map((cell, colIndex) => {
+              const piece = cell ? cell.type : null;
+              const color = cell ? cell.color : null;
+              const square = cell ? cell.square : null;
+  
+              // Debug log right here for each square.
+              console.log(`Rendering square: ${square || 'null'}`);
+    
+              return (
+                <Square 
+                  key={colIndex} 
+                  isDark={(rowIndex + colIndex) % 2 === 1}
+                  onClick={() => handleSquareClick(square)}
+                  selected={selectedSquare === square}>
+                  {piece ? 
+                    <Piece 
+                      type={piece} 
+                      color={color} 
+                      onClick={() => handlePieceClick(piece, color, square)} 
+                    /> : null}
+                </Square>
+              );
+            })}
+          </Row>
+        );
+      })}
     </div>
   );
 }

@@ -8,28 +8,29 @@ export class ChessManager {
     }
   
     public move(from: string, to: string): boolean {
-        const moveObj: any = {
-            from: from,
-            to: to
-        };
-    
-        // Let's check and log the piece we're trying to move
-        const piece = this.game.get(from);
-        console.log(`Attempting to move piece from ${from} to ${to}:`, piece);
-    
-        if (piece && piece.type === 'p') {
-            if (piece.color === 'w' && to[1] === '8') {
-                moveObj.promotion = 'q';
-            } else if (piece.color === 'b' && to[1] === '1') {
-                moveObj.promotion = 'q';
-            }
+      const moveObj: any = {
+        from,
+        to
+      };
+  
+      // Let's check and log the piece we're trying to move
+      const piece = this.game.get(from);
+      console.log(`Attempting to move piece from ${from} to ${to}:`, piece);
+  
+      if (piece && piece.type === 'p') {
+        if (piece.color === 'w' && to[1] === '8') {
+          moveObj.promotion = 'q';
+        } else if (piece.color === 'b' && to[1] === '1') {
+          moveObj.promotion = 'q';
         }
-        
-        console.log("Move object:", moveObj);  // This log will help us see the move object before the move attempt.
-    
-        const move = this.game.move(moveObj);
-        return move !== null;
+      }
+  
+      console.log("Move object:", moveObj);  // This log will help us see the move object before the move attempt.
+  
+      const move = this.game.move(moveObj);
+      return move !== null;
     }
+  
     
     // Get current board state
     public getBoard(): any {

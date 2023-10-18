@@ -28,10 +28,12 @@ app.post('/move', (req, res) => {
     }
 });
 
-// Endpoint to get the current board state
 app.get('/board', (req, res) => {
-    res.json(chessGame.getBoard());
+    const board = chessGame.getBoard();
+    console.log("Sending board state:", board);
+    res.json(board);
 });
+
 
 // Endpoint to check if it's in check
 app.get('/check', (req, res) => {
