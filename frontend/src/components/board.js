@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Row } from 'react-bootstrap';
-import Square from './square';
-import Piece from './piece';
+import Square from './Square';
+import Piece from './Piece';
 
 function Board({ boardState, movePiece }) {
   const [selectedSquare, setSelectedSquare] = useState(null);
@@ -33,7 +33,7 @@ function Board({ boardState, movePiece }) {
             {row.map((cell, colIndex) => {
               const piece = cell ? cell.type : null;
               const color = cell ? cell.color : null;
-              const square = cell ? cell.square : null;
+              const square = cell ? cell.square : `${String.fromCharCode(97 + colIndex)}${8 - rowIndex}`;
   
               // Debug log right here for each square.
               console.log(`Rendering square: ${square || 'null'}`);

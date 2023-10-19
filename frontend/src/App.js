@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
-import Board from './components/board';
+import Board from './components/Board';
+import GameMenu from './components/GameMenu'; 
 import apiClient from './apiClient';
 
 function App() {
   const [boardState, setBoardState] = useState(null);
+  const [isMenuVisible, setIsMenuVisible] = useState(false);
 
   useEffect(() => {
     apiClient.get('/board')
@@ -43,12 +45,47 @@ function App() {
       console.error("Error making the move", error);
     }
   };
+
+  const toggleMenu = () => {
+    setIsMenuVisible(!isMenuVisible);
+  };
   
+
+  const resetBoard = () => {
+    // Logic to reset the board goes here
+  };
+  
+  const undoMove = () => {
+    // Logic to undo the last move
+  };
+
+  const saveGame = () => {
+    // Logic to save the current game state
+  };
+
+  const loadGame = () => {
+    // Logic to load a saved game state
+  };
+
+  const openSettings = () => {
+    // Logic to open settings dialog
+  };
+
   return (
     <Container>
       <Row className="mt-5">
         <Col>
           <h1>Chess Game</h1>
+          <button onClick={toggleMenu}>Menu</button>
+          {isMenuVisible && (
+            <GameMenu 
+              resetBoard={resetBoard} 
+              undoMove={undoMove} 
+              saveGame={saveGame} 
+              loadGame={loadGame} 
+              openSettings={openSettings} 
+            />
+          )}
         </Col>
       </Row>
       <Row className="mt-3">
@@ -59,5 +96,6 @@ function App() {
     </Container>
   );
 }
+
 
 export default App;
