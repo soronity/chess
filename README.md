@@ -1,52 +1,42 @@
-🚀 Getting Started
-Prerequisites
+# 🚀 Getting Started
+
+## Prerequisites
 
 Make sure you have these installed:
 
-    Git
-    Node.js
+- Git
+- Node.js
 
-Clone the Repository
+## Clone the Repository
 
 First, let's clone the repo:
 
-bash
+'git clone [Your-Repository-Link]'
 
-git clone 
-
-Setup the Backend
+## Setup the Backend
 
 Navigate to the backend folder:
 
-bash
+'cd chess/backend'
 
-cd chess/backend
+Now, let's wake up the server:
 
-Now, let's wake up our server:
-
-bash
-
-npm run start
+'npm run start'
 
 Now the backend is running!
 
-Setup the Frontend
+## Setup the Frontend
 
 Open a new terminal (don't close the first one, it's busy doing backend magic! ✨).
 
 Now, let's set up the frontend:
 
-bash
+'cd ../frontend npm run start'
 
-cd ../frontend
-npm run start
-
-🌐 Access the App
+## Access the App
 
 Open your favorite browser and go to:
 
-arduino
+'http://localhost:3000'
 
-http://localhost:3000
-
-And tada! 
+And tada!
