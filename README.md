@@ -25,7 +25,7 @@ Now the backend is running!
 
 Open a new terminal (don't close the first one, it's busy doing backend magic! ✨).
 
-Navigate to the frontend folder in your terminal and run the same command:
+Navigate to the frontend folder and run the same command:
 
 `npm run start`
 
@@ -37,4 +37,6 @@ Open your favorite browser and go to:
 
 And tada! Click on the pieces to move them. Open the menu to reset and undo moves. 
 
-Sometimes the app stops working seemingly randomly. If that happens you have to restart the backend server and try again. Sorry if you lost your game progress! I'm working on solving these issues.
+Sometimes the app stops working seemingly randomly. If that happens you have to restart the backend server and try again. 
+
+Sorry if you lost your game progress! I'm working on solving these issues.
