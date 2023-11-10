@@ -11,17 +11,13 @@ Make sure you have these installed:
 
 First, let's clone the repo:
 
-'git clone [Your-Repository-Link]'
+`git clone https://github.com/soronity/chess.git`
 
 ## Setup the Backend
 
-Navigate to the backend folder:
+The project has a main folder called chess and a frontend, a backend, and a mobile folder. Start by navigating to the backend folder in your terminal and run the command:
 
-'cd chess/backend'
-
-Now, let's wake up the server:
-
-'npm run start'
+`npm run start`
 
 Now the backend is running!
 
@@ -29,14 +25,16 @@ Now the backend is running!
 
 Open a new terminal (don't close the first one, it's busy doing backend magic! ✨).
 
-Now, let's set up the frontend:
+Navigate to the frontend folder in your terminal and run the same command:
 
-'cd ../frontend npm run start'
+`npm run start`
 
 ## Access the App
 
 Open your favorite browser and go to:
 
-'http://localhost:3000'
+`http://localhost:3000`
 
-And tada!
+And tada! Click on the pieces to move them. Open the menu to reset and undo moves. 
+
+Sometimes the app stops working seemingly randomly. If that happens you have to restart the backend server and try again. Sorry if you lost your game progress! I'm working on solving these issues.
