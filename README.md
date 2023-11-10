@@ -15,7 +15,7 @@ First, let's clone the repo:
 
 ## Setup the Backend
 
-The project has a main folder called chess and a frontend, a backend, and a mobile folder. Start by navigating to the backend folder in your terminal and run the command:
+Start by navigating to the backend folder in your terminal and run the command:
 
 `npm run start`
 
