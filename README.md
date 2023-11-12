@@ -40,3 +40,7 @@ And tada! Click on the pieces to move them. Open the menu to reset and undo move
 Sometimes the app stops working seemingly randomly. If that happens you have to restart the backend server and try again. 
 
 Sorry if you lost your game progress! I'm working on solving these issues.
+
+## Credits
+
+The game utilizes the open-source chess.js library. The app is built with extensive help from ChatGPT. 
