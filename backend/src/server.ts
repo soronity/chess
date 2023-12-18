@@ -1,73 +1,69 @@
 import express from 'express';
-import { Request, Response, NextFunction } from 'express';
-import { ChessManager } from './shared/chessManager'; 
 import cors from 'cors';
+import http from 'http';
+import { Server } from 'socket.io';
+import { ChessManager } from './shared/chessManager';
+import { Socket } from 'socket.io';
 
 const app = express();
-const PORT = 3001; // You can choose any port you like
-// Use CORS middleware before defining routes
-app.use(cors({
-    origin: '*'
-}));
-
-
-// Middleware to parse JSON requests
-app.use(express.json());
+const server = http.createServer(app);
+const io = new Server(server);
 
 let chessGame = new ChessManager();
+let players: Socket[] = [];
+let turn = 0;
 
-// Endpoint to make a move
-app.post('/move', (req, res) => {
-    console.log(req.body);
-    const { from, to } = req.body;
-    const isMoveValid = chessGame.move(from, to);
-    if (isMoveValid) {
-        res.json({ status: 'success', board: chessGame.getBoard() });
+app.use(cors());
+
+io.on('connection', (socket) => {
+    console.log('New client connected, socket ID:', socket.id);
+
+    if (players.length < 2) {
+        players.push(socket);
+        console.log(`Player connected, total players: ${players.length}`);
+        socket.emit('playerNumber', players.length);
     } else {
-        res.json({ status: 'error', message: 'Invalid move' });
+        socket.emit('error', 'Two players are already connected');
+        console.log('Connection attempt after max players reached');
+        return;
     }
-});
 
-app.get('/board', (req, res) => {
-    const board = chessGame.getBoard();
-    console.log("Sending board state:", board);
-    res.json(board);
-});
+    const initialBoardState = chessGame.getBoard();
+    console.log('Emitting initial board state:', initialBoardState);
+    socket.emit('board', initialBoardState);
 
+    socket.on('move', (data) => {
+        if (socket !== players[turn]) {
+            socket.emit('error', 'Not your turn');
+            return;
+        }
 
-// Endpoint to check if it's in check
-app.get('/check', (req, res) => {
-    const isInCheck = chessGame.isInCheck();
-    res.json({ inCheck: isInCheck });
-});
+        const { from, to } = data;
+        const isMoveValid = chessGame.move(from, to);
 
-// Endpoint to check if it's checkmate
-app.get('/checkmate', (req, res) => {
-    const isInCheckmate = chessGame.isInCheckmate();
-    res.json({ inCheckmate: isInCheckmate });
-});
+        if (isMoveValid) {
+            turn = 1 - turn; // Switch turn
+            io.emit('board', chessGame.getBoard());
+        } else {
+            socket.emit('error', 'Invalid move');
+        }
+    });
 
-// Endpoint to get legal moves for a particular square
-app.get('/legal-moves/:square', (req, res) => {
-    const legalMoves = chessGame.getLegalMoves(req.params.square);
-    res.json(legalMoves);
-});
+    socket.on('reset', () => {
+        chessGame = new ChessManager(); // Create a new game state
+        io.emit('board', chessGame.getBoard());
+    });
 
-// Endpoint to reset the game
-app.post('/reset', (req, res) => {
-    chessGame.resetGame();
-    res.json({ status: 'success', message: 'Game reset successfully!' });
-});
-
-// Error handling middleware
-app.use((err: any, req: Request, res: Response, next: NextFunction) => {
-    console.error(err.stack);  // Log the error stack trace for debugging
-    res.status(500).json({
-        status: 'error',
-        message: 'Something went wrong on the server! 🚨 Please try again later.',
+    socket.on('undo', () => {
+        const undoSuccessful = chessGame.undoMove();
+        if (undoSuccessful) {
+            io.emit('board', chessGame.getBoard());
+        } else {
+            socket.emit('error', 'No move to undo');
+        }
     });
 });
 
-app.listen(PORT, () => {
-    console.log(`Server is running at http://localhost:${PORT}`);
+server.listen(3001, () => {
+    console.log('listening on *:3001');
 });

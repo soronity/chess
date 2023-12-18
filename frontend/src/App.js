@@ -1,74 +1,49 @@
-import React, { useEffect, useState } from 'react';
-import { Container, Row, Col } from 'react-bootstrap';
-import Board from './components/Board';
-import GameMenu from './components/GameMenu'; 
-import apiClient from './apiClient';
+import React, { useEffect, useState } from "react";
+import { Container, Row, Col } from "react-bootstrap";
+import Board from "./components/Board";
+import GameMenu from "./components/GameMenu";
+import apiClient from "./apiClient";
+import socketIOClient from "socket.io-client";
+
+const socket = socketIOClient("http://localhost:3001");
 
 function App() {
   const [boardState, setBoardState] = useState(null);
   const [isMenuVisible, setIsMenuVisible] = useState(false);
 
   useEffect(() => {
-    apiClient.get('/board')
-      .then(response => {
-        console.log("Board state received from server:", JSON.stringify(response.data, null, 2));
-        setBoardState(response.data);
-      })
-      .catch(error => {
-        console.error("Error fetching initial board state:", error);
-      });
-  }, []);
-  
+    console.log("Establishing socket connection...");
 
-  const movePiece = async (selectedSquare, destinationSquare) => {
-    console.log(`Entering movePiece from ${selectedSquare} to ${destinationSquare}`);
-  
+    socket.on("board", (newBoardState) => {
+      console.log("Received new board state:", newBoardState);
+      setBoardState(newBoardState);
+    });
+
+    // Clean up
+    return () => {
+      console.log("Disconnecting socket...");
+      socket.disconnect();
+    };
+  }, []);
+
+  const movePiece = (selectedSquare, destinationSquare) => {
     const payload = {
       from: selectedSquare,
-      to: destinationSquare
+      to: destinationSquare,
     };
-    
-    console.log("Payload to send:", payload);
-  
-    try {
-      console.log("About to send POST request to /move");
-      const response = await apiClient.post('/move', payload);
-      console.log("Received response:", response);
-  
-      if (response.data.status === 'success') {
-        const newBoardState = response.data.board;
-        setBoardState(newBoardState);
-      } else {
-        console.error("Invalid move", response.data.message);
-      }
-    } catch (error) {
-      console.error("Error making the move", error);
-    }
+    socket.emit("move", payload);
   };
 
   const toggleMenu = () => {
     setIsMenuVisible(!isMenuVisible);
   };
-  
 
   const resetBoard = () => {
-    // Logic to reset the board goes here
+    socket.emit("reset");
   };
-  
+
   const undoMove = () => {
-    // Logic to undo the last move
-  };
-
-  const saveGame = () => {
-    // Logic to save the current game state
-  };
-
-  const loadGame = () => {
-    // Logic to load a saved game state
-  };
-
-  const openSettings = () => {
-    // Logic to open settings dialog
+    socket.emit("undo");
   };
 
   return (
@@ -78,24 +53,21 @@ function App() {
           <h1>Chess Game</h1>
           <button onClick={toggleMenu}>Menu</button>
           {isMenuVisible && (
-            <GameMenu 
-              resetBoard={resetBoard} 
-              undoMove={undoMove} 
-              saveGame={saveGame} 
-              loadGame={loadGame} 
-              openSettings={openSettings} 
-            />
+            <GameMenu resetBoard={resetBoard} undoMove={undoMove} />
           )}
         </Col>
       </Row>
       <Row className="mt-3">
         <Col xs={12} md={8}>
-          {boardState ? <Board boardState={boardState} movePiece={movePiece} /> : "Loading..."}
+          {boardState ? (
+            <Board boardState={boardState} movePiece={movePiece} />
+          ) : (
+            "Loading..."
+          )}
         </Col>
       </Row>
     </Container>
   );
 }
-
 
 export default App;

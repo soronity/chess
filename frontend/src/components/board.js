@@ -7,27 +7,22 @@ function Board({ boardState, movePiece }) {
   const [selectedSquare, setSelectedSquare] = useState(null);
 
   const handlePieceClick = (pieceType, color, square) => {
-    console.log(`Piece clicked: ${pieceType} of color ${color} at ${square}`);
     setSelectedSquare(square);
   };
 
   const handleSquareClick = (square) => {
-    console.log(`Square clicked at ${square}`);
     if (!square) {
-      console.warn("Square is null, likely an invalid click or markup issue");
       return;
     }
     if (selectedSquare) {
       movePiece(selectedSquare, square);
+      setSelectedSquare(null); // Reset the selected square
     }
   };
 
   return (
     <div>
       {boardState.map((row, rowIndex) => {
-        // Debug log right here to check what's rendering.
-        console.log(`Rendering row ${rowIndex}:`, row);
-        
         return (
           <Row key={rowIndex}>
             {row.map((cell, colIndex) => {
@@ -35,9 +30,6 @@ function Board({ boardState, movePiece }) {
               const color = cell ? cell.color : null;
               const square = cell ? cell.square : `${String.fromCharCode(97 + colIndex)}${8 - rowIndex}`;
   
-              // Debug log right here for each square.
-              console.log(`Rendering square: ${square || 'null'}`);
-    
               return (
                 <Square 
                   key={colIndex} 
