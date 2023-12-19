@@ -19,7 +19,7 @@ First, let's clone the repo:
 
 ## Setup the Backend
 
-Start by navigating to the App directory in your terminal, and then to the Backend directory. Run the command:
+Start by navigating to the app directory in your terminal, and then to the backend directory. Run the command:
 
 `npm run start`
 
@@ -29,7 +29,7 @@ Now the backend is running!
 
 Open a new terminal (don't close the first one, it's busy doing backend magic! ✨).
 
-Again, navigate to the App directory and this time into the Frontend folder. Run the same command:
+Again, navigate to the app directory and this time into the frontend directory. Run the same command:
 
 `npm run start`
 
