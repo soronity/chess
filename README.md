@@ -1,5 +1,9 @@
 # 🚀 Getting Started
 
+# What is this?
+
+It's a chess app that you can play locally in two tabs in the same browser. It's the first step in making it possible for two players to play online and possibly making a mobile app.
+
 ## Prerequisites
 
 Make sure you have these installed:
@@ -31,7 +35,7 @@ Navigate to the frontend folder and run the same command:
 
 ## Access the App
 
-Open your favorite browser and go to:
+Open your favorite browser and open the following URL in two different tabs:
 
 `http://localhost:3000`
 
@@ -40,6 +44,10 @@ And tada! Click on the pieces to move them. Open the menu to reset and undo move
 Sometimes the app stops working seemingly randomly. If that happens you have to restart the backend server and try again. 
 
 Sorry if you lost your game progress! I'm working on solving these issues.
+
+## Features to add
+
+- Uh, all the correct legal moves of chess of course!
 
 ## Credits
 
