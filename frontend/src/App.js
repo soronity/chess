@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import Board from "./components/Board";
 import GameMenu from "./components/GameMenu";
-import apiClient from "./apiClient";
 import socketIOClient from "socket.io-client";
 
 const socket = socketIOClient("http://localhost:3001");

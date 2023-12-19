@@ -6,14 +6,22 @@ import { ChessManager } from './shared/chessManager';
 import { Socket } from 'socket.io';
 
 const app = express();
+app.use(cors({ origin: 'http://localhost:3000' }));
+
 const server = http.createServer(app);
-const io = new Server(server);
+const io = new Server(server, {
+    cors: {
+        origin: 'http://localhost:3000',
+        methods: ['GET', 'POST']
+    }
+});
+
+const PORT = 3001;
 
 let chessGame = new ChessManager();
 let players: Socket[] = [];
 let turn = 0;
 
-app.use(cors());
 
 io.on('connection', (socket) => {
     console.log('New client connected, socket ID:', socket.id);
@@ -64,6 +72,6 @@ io.on('connection', (socket) => {
     });
 });
 
-server.listen(3001, () => {
-    console.log('listening on *:3001');
+server.listen(PORT, () => {
+    console.log(`Server is running on http://localhost:${PORT}`);
 });
