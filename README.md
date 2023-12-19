@@ -2,7 +2,7 @@
 
 # What is this?
 
-It's a chess app that you can play locally in two tabs in the same browser. It's the first step in making it possible for two players to play online and possibly making a mobile app.
+It's an unfinished chess app that you can play locally in two tabs in the same browser. It's the first step in making it possible for two players to play online and possibly making a mobile app. Also, all legal moves are not present, like castling and en passe.
 
 ## Prerequisites
 
@@ -19,7 +19,7 @@ First, let's clone the repo:
 
 ## Setup the Backend
 
-Start by navigating to the backend folder in your terminal and run the command:
+Start by navigating to the App directory in your terminal, and then to the Backend directory. Run the command:
 
 `npm run start`
 
@@ -29,7 +29,7 @@ Now the backend is running!
 
 Open a new terminal (don't close the first one, it's busy doing backend magic! ✨).
 
-Navigate to the frontend folder and run the same command:
+Again, navigate to the App directory and this time into the Frontend folder. Run the same command:
 
 `npm run start`
 
