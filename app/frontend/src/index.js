@@ -2,7 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import 'bootstrap/dist/css/bootstrap.min.css'; 
 import App from './App';
-import './index.css'; // Any global CSS you might have
+import app from './firebase';
+import './index.css';
 
 ReactDOM.render(
   <React.StrictMode>

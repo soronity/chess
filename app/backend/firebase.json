@@ -1,0 +1,23 @@
+{
+  "hosting": {
+    "public": "public", // A placeholder, since you won't serve frontend content from Firebase
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "function": "yourFunctionName" // The name of the Cloud Function you want to handle requests
+      }
+    ]
+  },
+  "functions": {
+    "source": "functions", // This tells Firebase where your functions are located
+    "predeploy": [
+      "npm --prefix \"$RESOURCE_DIR\" run lint",
+      "npm --prefix \"$RESOURCE_DIR\" run build"
+    ]
+  }
+}

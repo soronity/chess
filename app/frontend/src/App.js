@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import app from './firebase';
 import { Container, Row, Col } from "react-bootstrap";
 import Board from "./components/Board";
 import GameMenu from "./components/GameMenu";
