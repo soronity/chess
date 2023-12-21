@@ -2,7 +2,7 @@
 
 # What is this?
 
-It's an unfinished chess app based on the open-source chess.js library that you can play locally in two tabs in the same browser. It's the first step in making it possible for two players to play online and possibly making a mobile app. Also, all legal moves are not present, like castling and en passant.
+It's an unfinished chess app based on the open-source chess.js library that you can play locally in two tabs in the same browser. It's the first step in making it possible for two players to play online and possibly making a mobile app. Also, all legal moves are not present, like castling and en passant. It's a bit glitchy so if it stops working then restart both the backend and frontend (details on how below)
 
 ## Prerequisites
 

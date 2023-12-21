@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { Row } from 'react-bootstrap';
-import Square from './Square';
-import Piece from './Piece';
+import React, { useState } from "react";
+import { Row } from "react-bootstrap";
+import Square from "./Square";
+import Piece from "./Piece";
 
 function Board({ boardState, movePiece }) {
   const [selectedSquare, setSelectedSquare] = useState(null);
@@ -19,6 +19,9 @@ function Board({ boardState, movePiece }) {
     }
     if (selectedSquare) {
       movePiece(selectedSquare, square);
+      // Here, after moving the piece, update the game state in Firebase
+      const gameState = this.state.gameState;
+      database.ref('games/' + gameId).set(gameState);
     }
   };
 
@@ -27,29 +30,33 @@ function Board({ boardState, movePiece }) {
       {boardState.map((row, rowIndex) => {
         // Debug log right here to check what's rendering.
         console.log(`Rendering row ${rowIndex}:`, row);
-        
+
         return (
           <Row key={rowIndex}>
             {row.map((cell, colIndex) => {
               const piece = cell ? cell.type : null;
               const color = cell ? cell.color : null;
-              const square = cell ? cell.square : `${String.fromCharCode(97 + colIndex)}${8 - rowIndex}`;
-  
+              const square = cell
+                ? cell.square
+                : `${String.fromCharCode(97 + colIndex)}${8 - rowIndex}`;
+
               // Debug log right here for each square.
-              console.log(`Rendering square: ${square || 'null'}`);
-    
+              console.log(`Rendering square: ${square || "null"}`);
+
               return (
-                <Square 
-                  key={colIndex} 
+                <Square
+                  key={colIndex}
                   isDark={(rowIndex + colIndex) % 2 === 1}
                   onClick={() => handleSquareClick(square)}
-                  selected={selectedSquare === square}>
-                  {piece ? 
-                    <Piece 
-                      type={piece} 
-                      color={color} 
-                      onClick={() => handlePieceClick(piece, color, square)} 
-                    /> : null}
+                  selected={selectedSquare === square}
+                >
+                  {piece ? (
+                    <Piece
+                      type={piece}
+                      color={color}
+                      onClick={() => handlePieceClick(piece, color, square)}
+                    />
+                  ) : null}
                 </Square>
               );
             })}
